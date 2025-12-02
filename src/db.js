@@ -1,13 +1,14 @@
-const sqlite3 = require('sqlite3').verbose();
-const { open } = require('sqlite');
+import sqlite3pkg from 'sqlite3';
+const sqlite3 = sqlite3pkg.verbose();
+import { open } from 'sqlite';
 
 async function initDB(filename) {
-  const db = await open({
-    filename,
-    driver: sqlite3.Database
-  });
+    const db = await open({
+        filename,
+        driver: sqlite3.Database
+    });
 
-  await db.exec(`
+    await db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
@@ -18,7 +19,7 @@ async function initDB(filename) {
     );
   `);
 
-  return db;
+    return db;
 }
 
-module.exports = { initDB };
+export default { initDB };

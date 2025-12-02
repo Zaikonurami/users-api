@@ -1,26 +1,26 @@
-const express = require('express');
-const morgan = require('morgan');
-const helmet = require('helmet');
-const cors = require('cors');
-const usersRouter = require('./routes/users');
+import express, { json } from 'express';
+import morgan from 'morgan';
+import helmet from 'helmet';
+import cors from 'cors';
+import usersRouter from './routes/users.js';
 
 function createApp(db) {
-  const app = express();
-  app.use(helmet());
-  app.use(cors());
-  app.use(morgan('dev'));
-  app.use(express.json());
-  app.set('db', db);
+    const app = express();
+    app.use(helmet());
+    app.use(cors());
+    app.use(morgan('dev'));
+    app.use(json());
+    app.set('db', db);
 
-  app.get('/health', (req, res) => res.json({ ok: true }));
-  app.use('/api/users', usersRouter);
+    app.get('/health', (req, res) => res.json({ ok: true }));
+    app.use('/api/users', usersRouter);
 
-  app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).json({ error: 'Internal Server Error' });
-  });
+    app.use((err, req, res, next) => {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    });
 
-  return app;
+    return app;
 }
 
-module.exports = createApp;
+export default createApp;
